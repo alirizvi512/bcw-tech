@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: bcw_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-bcw}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bcwpass}
+      POSTGRES_DB: ${POSTGRES_DB:-bcw}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-bcw} -d ${POSTGRES_DB:-bcw}",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: ./../backend
+      dockerfile: Dockerfile
+    container_name: bcw_api
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    command: ["node", "dist/main.js"]
+
+  web:
+    build:
+      context: ./../frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE: ${VITE_API_BASE:-http://localhost:3000}
+    container_name: bcw_web
+    depends_on:
+      - api
+    env_file:
+      - .env
+    ports:
+      - "5173:5173"
+    environment:
+      API_BASE_URL: ${API_BASE_URL:-http://bcw_api:3000}
+
+volumes:
+  pgdata:
