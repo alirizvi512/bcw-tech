@@ -16,8 +16,8 @@ export default function App() {
 
       <main className="w-full mx-auto px-4 py-6">
         <p className="mb-4 text-gray-700">
-          Connect your wallet on <b>Sepolia</b>, donate a small amount, and you’ll be automatically
-          entered into this week’s draw. Winner gets <b>2×</b> their donation back. 🔁🎉
+          Connect your wallet on <b>Ethereum Sepolia</b>, donate a small amount, and you’ll be automatically
+          entered into this week’s draw. Winner gets <b>double</b> of their donation back.
         </p>
 
         <DonateForm wallet={wallet} />

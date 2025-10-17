@@ -6,8 +6,6 @@ import { Donation } from "../donations/entities/donation.entity";
 import { User } from "../users/entities/user.entity";
 import crypto from "node:crypto";
 import { DeepPartial } from "typeorm";
-
-// ethers v6
 import { ethers } from "ethers";
 import { getEthUsd } from "../utils/price";
 import { EmailService } from "../common/email.service";
@@ -103,7 +101,7 @@ export class WinnersService {
         this.logger.log("Checking balance and sending transaction");
         const rewarderAddr = await this.rewardSigner.getAddress();
         const bal: bigint = await this.provider.getBalance(rewarderAddr);
-        const GAS_BUFFER = ethers.parseUnits("0.0002", "ether"); // adjust if needed
+        const GAS_BUFFER = ethers.parseUnits("0.0002", "ether");
         if (bal < rewardWei + GAS_BUFFER) {
             winner.rewardStatus = "failed";
             winner.rewardError =
@@ -113,7 +111,6 @@ export class WinnersService {
         }
 
         try {
-            // Send ETH
             const to = donation.user.wallet;
             const tx = await this.rewardSigner.sendTransaction({ to, value: rewardWei });
             const rcpt = await tx.wait();

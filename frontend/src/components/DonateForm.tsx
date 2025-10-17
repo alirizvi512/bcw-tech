@@ -34,10 +34,10 @@ export default function DonateForm(props: { wallet?: string }) {
             setStatus("Recording donation on server…");
             await recordDonation(txHash, props.wallet, email.trim() || undefined);
 
-            setStatus("✅ Donation recorded! You’re entered for the weekly draw.");
+            setStatus("Donation recorded! You’re entered for the weekly draw.");
         } catch (e: any) {
             console.error(e);
-            setStatus("❌ " + (e?.shortMessage || e?.message || "Donation failed"));
+            setStatus((e?.shortMessage || e?.message || "Donation failed"));
         } finally {
             setBusy(false);
         }

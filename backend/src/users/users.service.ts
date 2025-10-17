@@ -14,7 +14,6 @@ export class UsersService {
     }
 
     async findByWallet(wallet: string) {
-        // wallet should already be checksum-normalized by the caller if needed
         return this.users.findOne({ where: { wallet } });
     }
 

@@ -10,7 +10,7 @@ export async function getEthUsd(
     feedAddress: string
 ): Promise<{ price: bigint; decimals: number }> {
     const feed = new ethers.Contract(feedAddress, CL_ABI, provider);
-    const [, answer] = await feed.latestRoundData(); // answer is int256
+    const [, answer] = await feed.latestRoundData();
     const dec: number = await feed.decimals();
     if (answer <= 0) throw new Error("Invalid oracle price");
     return { price: BigInt(answer), decimals: dec };

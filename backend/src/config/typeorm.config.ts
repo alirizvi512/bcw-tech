@@ -8,6 +8,6 @@ export const typeormConfig = (): TypeOrmModuleOptions => ({
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
     entities: [__dirname + "/../**/*.entity.{ts,js}"],
-    synchronize: true, // DEV only; replace with migrations in prod
+    synchronize: true,
     logging: false
 });
